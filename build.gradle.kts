@@ -17,11 +17,23 @@ tasks.withType(KotlinCompile::class.java).configureEach {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+jib {
+    to {
+        image = "kamko/bw_rs-backup"
+    }
+
+    container {
+        mainClass = "dev.kamko.bw_rs_backup.BwRsAppKt"
+        volumes = listOf("/bw-data")
+    }
+}
+
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.slf4j:slf4j-api:'1.7.30")
 
+    implementation("org.quartz-scheduler:quartz:2.3.2")
     implementation("net.lingala.zip4j:zip4j:2.5.2")
     implementation("org.xerial:sqlite-jdbc:3.31.1")
 

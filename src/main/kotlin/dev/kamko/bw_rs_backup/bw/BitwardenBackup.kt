@@ -18,20 +18,18 @@ import java.time.LocalDateTime
 class BitwardenBackup(
     private val storage: CloudStorage,
     private val password: String,
-    private val dataFolder: Path
+    private val dataFolder: Path = Path.of("/bw-data")
 ) {
 
     fun createBackup() {
         createZip(password).use {
-            storage.save(filename(), it)
+            storage.save(filename(), "application/zip", it)
         }
     }
-
 
     private fun createZip(password: String): InputStream {
         val target = Files.createTempFile("bwbckp", ".zip")
         val zip = ZipFile(target.toFile())
-
         zip.setPassword(password.toCharArray())
 
         addDb(zip)

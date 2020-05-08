@@ -4,5 +4,5 @@ import java.io.InputStream
 
 interface CloudStorage {
 
-    fun save(name: String, content: InputStream)
+    fun save(name: String, contentType: String, content: InputStream)
 }
