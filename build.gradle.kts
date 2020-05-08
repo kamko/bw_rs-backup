@@ -19,6 +19,8 @@ tasks.withType(KotlinCompile::class.java).configureEach {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("org.slf4j:slf4j-api:'1.7.30")
 
     implementation("net.lingala.zip4j:zip4j:2.5.2")
     implementation("org.xerial:sqlite-jdbc:3.31.1")
