@@ -5,12 +5,9 @@ import org.quartz.impl.StdSchedulerFactory
 
 
 class QuartzScheduler {
+
     private val sf = StdSchedulerFactory()
     private val scheduler = sf.getScheduler()
-
-    init {
-        scheduler.start()
-    }
 
     fun scheduleJob(runnable: Runnable, cron: String) {
         val job = JobBuilder.newJob(RunnableJob::class.java)
@@ -30,6 +27,10 @@ class QuartzScheduler {
         scheduler.scheduleJob(
             job, trigger
         )
+
+        if (!scheduler.isStarted) {
+            scheduler.start()
+        }
     }
 
     class RunnableJob : Job {
