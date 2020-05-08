@@ -18,6 +18,10 @@ tasks.withType(KotlinCompile::class.java).configureEach {
 }
 
 jib {
+    from {
+        image = "adoptopenjdk:14.0.1_7.1-jre-hotspot"
+    }
+
     to {
         image = "kamko/bw_rs-backup"
     }
