@@ -14,6 +14,11 @@ docker run \
     kamko/bw_rs-backup
 ```
 
+## Builds
+Automatically built docker images (using [jib](https://github.com/GoogleContainerTools/jib/)) pushed to Docker Hub.
+
+- [kamko/bw_rs-backup](https://hub.docker.com/r/kamko/bw_rs-backup)
+
 ## Configuration
 ```
 BACKUP_CRON=<quartz-cron-expression>
