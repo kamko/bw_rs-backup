@@ -63,7 +63,7 @@ class QuartzScheduler(private val errorNotifier: Notifier) {
 
         private fun sendErrorNotification(context: JobExecutionContext, e: Exception) {
             val errorNotifier = context.mergedJobDataMap.getValue("errorNotifier") as Notifier
-            errorNotifier.publish("Job failed with stacktrace: ${e.stackTrace}")
+            errorNotifier.notify("Job failed with stacktrace: ${e.stackTrace}")
         }
     }
 }

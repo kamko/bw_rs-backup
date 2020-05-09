@@ -14,7 +14,7 @@ class TelegramNotifier(
 
     private val bot = TelegramBot(config.botToken)
 
-    override fun publish(message: String) {
+    override fun notify(message: String) {
         log.debug("Sending telegram message to chatId=${config.chatId}, message=$message")
         bot.execute(SendMessage(config.chatId, message))
     }
