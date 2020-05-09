@@ -5,10 +5,12 @@ import com.backblaze.b2.client.contentSources.B2FileContentSource
 import com.backblaze.b2.client.structures.B2UploadFileRequest
 import dev.kamko.bw_rs_backup.USER_AGENT
 import dev.kamko.bw_rs_backup.storage.CloudStorage
+import org.slf4j.LoggerFactory
 import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Path
 
+val log = LoggerFactory.getLogger(B2Storage::class.java)
 
 data class B2Config(val keyId: String, val keyValue: String, val bucketId: String)
 
@@ -19,6 +21,7 @@ class B2Storage(val config: B2Config) : CloudStorage {
         .create(config.keyId, config.keyValue, USER_AGENT)
 
     override fun save(name: String, contentType: String, content: InputStream) {
+        log.debug("save(name=$name, contentType=$contentType)")
         val tmpFile = saveToTempFile(content)
         client.uploadSmallFile(
             B2UploadFileRequest.builder(

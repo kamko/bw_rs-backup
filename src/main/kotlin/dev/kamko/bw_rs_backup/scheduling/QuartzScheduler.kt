@@ -7,7 +7,7 @@ import org.quartz.impl.StdSchedulerFactory
 class QuartzScheduler {
 
     private val sf = StdSchedulerFactory()
-    private val scheduler = sf.getScheduler()
+    private val scheduler = sf.scheduler
 
     fun scheduleJob(runnable: Runnable, cron: String) {
         val job = JobBuilder.newJob(RunnableJob::class.java)

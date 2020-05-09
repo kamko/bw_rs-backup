@@ -7,6 +7,7 @@ import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.AesKeyStrength
 import net.lingala.zip4j.model.enums.EncryptionMethod
+import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
@@ -16,6 +17,8 @@ import java.sql.DriverManager
 import java.time.Instant
 import java.time.LocalDateTime
 
+val log = LoggerFactory.getLogger(BitwardenBackup::class.java)
+
 class BitwardenBackup(
     private val storage: CloudStorage,
     private val password: String,
@@ -23,9 +26,11 @@ class BitwardenBackup(
 ) {
 
     fun createBackup() {
+        log.info("Creating backup")
         createZip(password).use {
             storage.save(filename(), "application/zip", it)
         }
+        log.info("Finished backup")
     }
 
     private fun createZip(password: String): InputStream {
