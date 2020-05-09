@@ -25,6 +25,7 @@ jib {
 
     to {
         image = "kamko/bw_rs-backup"
+        tags = setOf("latest", "$version-${System.getenv("COMMIT_SHA_SHORT") ?: "dev"}")
     }
 
     container {

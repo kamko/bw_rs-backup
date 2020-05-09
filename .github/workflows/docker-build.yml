@@ -24,4 +24,4 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Build and push
-        run: ./gradlew jib -Djib.to.tags=latest,${COMMIT_SHA_SHORT}
+        run: ./gradlew jib
