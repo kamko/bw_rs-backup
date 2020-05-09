@@ -13,6 +13,7 @@ import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import java.sql.DriverManager
+import java.time.Instant
 import java.time.LocalDateTime
 
 class BitwardenBackup(
@@ -28,7 +29,8 @@ class BitwardenBackup(
     }
 
     private fun createZip(password: String): InputStream {
-        val target = Files.createTempFile("bwbckp", ".zip")
+        val target = Path.of(System.getProperty("java.io.tmpdir"), "bwbckp-${Instant.now()}.tmp")
+
         val zip = ZipFile(target.toFile())
         zip.setPassword(password.toCharArray())
 
