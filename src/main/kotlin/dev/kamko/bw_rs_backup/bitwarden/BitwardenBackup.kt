@@ -1,6 +1,6 @@
 @file:Suppress("SqlNoDataSourceInspection")
 
-package dev.kamko.bw_rs_backup.bw
+package dev.kamko.bw_rs_backup.bitwarden
 
 import dev.kamko.bw_rs_backup.storage.CloudStorage
 import net.lingala.zip4j.ZipFile

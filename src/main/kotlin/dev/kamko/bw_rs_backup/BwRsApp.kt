@@ -1,13 +1,13 @@
 package dev.kamko.bw_rs_backup
 
-import dev.kamko.bw_rs_backup.bw.BitwardenBackup
+import dev.kamko.bw_rs_backup.bitwarden.BitwardenBackup
 import dev.kamko.bw_rs_backup.notification.TelegramNotifier
 import dev.kamko.bw_rs_backup.scheduling.QuartzScheduler
 import dev.kamko.bw_rs_backup.storage.CloudStorage
 import dev.kamko.bw_rs_backup.storage.b2.B2Storage
 import org.slf4j.LoggerFactory
 
-private val log = LoggerFactory.getLogger("dev.kamko.bw_rs_backup.main")
+private val log = LoggerFactory.getLogger(BwRsApp::class.java)
 
 class BwRsApp {
 
