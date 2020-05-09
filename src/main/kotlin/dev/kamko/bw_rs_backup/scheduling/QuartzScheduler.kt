@@ -2,7 +2,10 @@ package dev.kamko.bw_rs_backup.scheduling
 
 import org.quartz.*
 import org.quartz.impl.StdSchedulerFactory
+import org.slf4j.LoggerFactory
+import java.time.Instant
 
+val log = LoggerFactory.getLogger(QuartzScheduler::class.java)
 
 class QuartzScheduler {
 
@@ -34,9 +37,26 @@ class QuartzScheduler {
     }
 
     class RunnableJob : Job {
-        override fun execute(context: JobExecutionContext?) {
-            (context!!.mergedJobDataMap.getValue("runnable") as Runnable).run()
+        override fun execute(context: JobExecutionContext) {
+            try {
+                val runnable = context.mergedJobDataMap.getValue("runnable") as Runnable
+                runnable.run()
+            } catch (e: Exception) {
+                log.error("Job failed with exception $e")
+                scheduleRetry(context)
+            }
+        }
+
+        private fun scheduleRetry(context: JobExecutionContext) {
+            log.error("Scheduling retry job after 60 seconds")
+
+            val trigger = TriggerBuilder.newTrigger()
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withRepeatCount(0))
+                .startAt(java.util.Date.from(Instant.now().plusSeconds(60)))
+                .forJob(context.jobDetail.key)
+                .build()
+
+            context.scheduler.scheduleJob(trigger)
         }
     }
-
 }

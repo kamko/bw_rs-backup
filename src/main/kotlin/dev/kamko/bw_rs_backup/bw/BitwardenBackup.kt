@@ -26,10 +26,12 @@ class BitwardenBackup(
 ) {
 
     fun createBackup() {
-        log.info("Creating backup")
+        log.info("Starting backup")
+
         createZip(password).use {
             storage.save(filename(), "application/zip", it)
         }
+
         log.info("Finished backup")
     }
 

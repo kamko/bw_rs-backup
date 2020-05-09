@@ -8,19 +8,26 @@ import org.slf4j.LoggerFactory
 
 val log = LoggerFactory.getLogger("dev.kamko.bw_rs_backup.main")
 
-val scheduler = QuartzScheduler()
+class BwRsApp {
 
-fun main() {
-    log.info("Welcome to bw_rs-backup")
-    val appConfig = loadAppConfig()
+    private val appConfig = loadAppConfig()
+    private val scheduler = QuartzScheduler()
 
-    val storage: CloudStorage = B2Storage(config = appConfig.b2Config)
-    val bwBackup = BitwardenBackup(
-        storage = storage,
-        password = appConfig.zipPassword
-    )
+    fun run() {
+        log.info("Welcome to bw_rs-backup")
 
-    log.info("Scheduling backup job with cron expression: ${appConfig.cron}")
-    scheduler.scheduleJob(Runnable { bwBackup.createBackup() }, appConfig.cron)
+        val storage: CloudStorage = B2Storage(config = appConfig.b2Config)
+        val bwBackup = BitwardenBackup(
+            storage = storage,
+            password = appConfig.zipPassword
+        )
+
+        log.info("Scheduling backup job with cron expression: ${appConfig.cron}")
+        scheduler.scheduleJob(Runnable { bwBackup.createBackup() }, appConfig.cron)
+    }
 }
 
+
+fun main() {
+    BwRsApp().run()
+}
