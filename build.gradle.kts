@@ -4,6 +4,7 @@ plugins {
     application
     kotlin("jvm") version "1.3.71"
     id("com.google.cloud.tools.jib") version "2.2.0"
+    id("com.gorylenko.gradle-git-properties") version "2.2.2"
 }
 
 group = "dev.kamko"

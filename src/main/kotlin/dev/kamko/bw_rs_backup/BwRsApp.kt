@@ -12,12 +12,14 @@ private val log = LoggerFactory.getLogger(BwRsApp::class.java)
 class BwRsApp {
 
     private val appConfig = loadAppConfig()
+    private val gitProperties = loadGitProperties()
     private val scheduler = QuartzScheduler(
         TelegramNotifier(appConfig.telegram)
     )
 
     fun run() {
-        log.info("Welcome to bw_rs-backup")
+        log.info("Welcome to bw_rs-backup:${gitProperties.version}")
+        log.info("Build: ${gitProperties.commit}")
 
         val bwBackup = BackupJob(
             storage = B2Storage(config = appConfig.b2Config),
@@ -31,7 +33,6 @@ class BwRsApp {
         scheduler.scheduleJob(Runnable { job.runBackup() }, appConfig.cron)
     }
 }
-
 
 fun main() {
     BwRsApp().run()
