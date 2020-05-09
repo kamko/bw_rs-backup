@@ -1,17 +1,20 @@
 package dev.kamko.bw_rs_backup
 
 import dev.kamko.bw_rs_backup.bw.BitwardenBackup
+import dev.kamko.bw_rs_backup.notification.TelegramNotifier
 import dev.kamko.bw_rs_backup.scheduling.QuartzScheduler
 import dev.kamko.bw_rs_backup.storage.CloudStorage
 import dev.kamko.bw_rs_backup.storage.b2.B2Storage
 import org.slf4j.LoggerFactory
 
-val log = LoggerFactory.getLogger("dev.kamko.bw_rs_backup.main")
+private val log = LoggerFactory.getLogger("dev.kamko.bw_rs_backup.main")
 
 class BwRsApp {
 
     private val appConfig = loadAppConfig()
-    private val scheduler = QuartzScheduler()
+    private val scheduler = QuartzScheduler(
+        TelegramNotifier(appConfig.telegram)
+    )
 
     fun run() {
         log.info("Welcome to bw_rs-backup")

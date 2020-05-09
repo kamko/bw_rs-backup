@@ -1,13 +1,14 @@
 package dev.kamko.bw_rs_backup.scheduling
 
+import dev.kamko.bw_rs_backup.notification.Notifier
 import org.quartz.*
 import org.quartz.impl.StdSchedulerFactory
 import org.slf4j.LoggerFactory
 import java.time.Instant
 
-val log = LoggerFactory.getLogger(QuartzScheduler::class.java)
+private val log = LoggerFactory.getLogger(QuartzScheduler::class.java)
 
-class QuartzScheduler {
+class QuartzScheduler(private val errorNotifier: Notifier) {
 
     private val sf = StdSchedulerFactory()
     private val scheduler = sf.scheduler
@@ -17,7 +18,8 @@ class QuartzScheduler {
             .setJobData(
                 JobDataMap(
                     mapOf(
-                        "runnable" to runnable
+                        "runnable" to runnable,
+                        "errorNotifier" to errorNotifier
                     )
                 )
             ).build();
@@ -43,6 +45,10 @@ class QuartzScheduler {
                 runnable.run()
             } catch (e: Exception) {
                 log.error("Job failed with exception $e")
+
+                val errorNotifier = context.mergedJobDataMap.getValue("errorNotifier") as Notifier
+                errorNotifier.publish("Job failed with stacktrace: ${e.stackTrace}")
+
                 scheduleRetry(context)
             }
         }

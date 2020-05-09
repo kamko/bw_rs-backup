@@ -10,7 +10,7 @@ import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Path
 
-val log = LoggerFactory.getLogger(B2Storage::class.java)
+private val log = LoggerFactory.getLogger(B2Storage::class.java)
 
 data class B2Config(val keyId: String, val keyValue: String, val bucketId: String)
 

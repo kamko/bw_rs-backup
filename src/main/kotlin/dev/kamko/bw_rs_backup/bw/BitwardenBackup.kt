@@ -17,7 +17,7 @@ import java.sql.DriverManager
 import java.time.Instant
 import java.time.LocalDateTime
 
-val log = LoggerFactory.getLogger(BitwardenBackup::class.java)
+private val log = LoggerFactory.getLogger(BitwardenBackup::class.java)
 
 class BitwardenBackup(
     private val storage: CloudStorage,

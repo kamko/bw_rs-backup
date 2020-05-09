@@ -1,5 +1,6 @@
 package dev.kamko.bw_rs_backup
 
+import dev.kamko.bw_rs_backup.notification.TelegramConfig
 import dev.kamko.bw_rs_backup.storage.b2.B2Config
 
 const val USER_AGENT = "kamko/bw_rs-backup" // todo: add version
@@ -7,6 +8,7 @@ const val USER_AGENT = "kamko/bw_rs-backup" // todo: add version
 data class AppConfig(
     val zipPassword: String,
     val b2Config: B2Config,
+    val telegram: TelegramConfig,
     val cron: String
 )
 
@@ -16,6 +18,10 @@ fun loadAppConfig() = AppConfig(
         keyId = System.getenv("BACKUP_B2_KEY_ID"),
         keyValue = System.getenv("BACKUP_B2_KEY_VALUE"),
         bucketId = System.getenv("BACKUP_B2_BUCKET_ID")
+    ),
+    telegram = TelegramConfig(
+        botToken = System.getenv("BACKUP_TELEGRAM_TOKEN"),
+        chatId = System.getenv("BACKUP_TELEGRAM_CHAT_ID")
     ),
     cron = System.getenv("BACKUP_CRON")
 )
