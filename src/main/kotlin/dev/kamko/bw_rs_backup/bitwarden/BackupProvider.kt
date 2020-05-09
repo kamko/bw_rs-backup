@@ -65,7 +65,6 @@ class BackupProvider(
         zipParameters.isEncryptFiles = true;
         zipParameters.encryptionMethod = EncryptionMethod.AES;
         zipParameters.aesKeyStrength = AesKeyStrength.KEY_STRENGTH_256;
-        zipParameters.fileNameInZip
 
         return zipParameters
     }
