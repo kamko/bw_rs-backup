@@ -5,6 +5,7 @@ import org.quartz.*
 import org.quartz.impl.StdSchedulerFactory
 import org.slf4j.LoggerFactory
 import java.time.Instant
+import java.util.*
 
 private val log = LoggerFactory.getLogger(QuartzScheduler::class.java)
 
@@ -22,16 +23,14 @@ class QuartzScheduler(private val errorNotifier: Notifier) {
                         "errorNotifier" to errorNotifier
                     )
                 )
-            ).build();
+            ).build()
 
         val trigger = TriggerBuilder.newTrigger()
             .withSchedule(CronScheduleBuilder.cronSchedule(cron))
             .startNow()
             .build()
 
-        scheduler.scheduleJob(
-            job, trigger
-        )
+        scheduler.scheduleJob(job, trigger)
 
         if (!scheduler.isStarted) {
             scheduler.start()
@@ -45,10 +44,7 @@ class QuartzScheduler(private val errorNotifier: Notifier) {
                 runnable.run()
             } catch (e: Exception) {
                 log.error("Job failed with exception $e")
-
-                val errorNotifier = context.mergedJobDataMap.getValue("errorNotifier") as Notifier
-                errorNotifier.publish("Job failed with stacktrace: ${e.stackTrace}")
-
+                sendErrorNotification(context, e)
                 scheduleRetry(context)
             }
         }
@@ -58,11 +54,16 @@ class QuartzScheduler(private val errorNotifier: Notifier) {
 
             val trigger = TriggerBuilder.newTrigger()
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().withRepeatCount(0))
-                .startAt(java.util.Date.from(Instant.now().plusSeconds(60)))
+                .startAt(Date.from(Instant.now().plusSeconds(60)))
                 .forJob(context.jobDetail.key)
                 .build()
 
             context.scheduler.scheduleJob(trigger)
+        }
+
+        private fun sendErrorNotification(context: JobExecutionContext, e: Exception) {
+            val errorNotifier = context.mergedJobDataMap.getValue("errorNotifier") as Notifier
+            errorNotifier.publish("Job failed with stacktrace: ${e.stackTrace}")
         }
     }
 }

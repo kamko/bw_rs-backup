@@ -2,7 +2,6 @@
 
 package dev.kamko.bw_rs_backup.bitwarden
 
-import dev.kamko.bw_rs_backup.storage.CloudStorage
 import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.AesKeyStrength
@@ -15,27 +14,17 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.sql.DriverManager
 import java.time.Instant
-import java.time.LocalDateTime
 
-private val log = LoggerFactory.getLogger(BitwardenBackup::class.java)
+private val log = LoggerFactory.getLogger(BackupProvider::class.java)
 
-class BitwardenBackup(
-    private val storage: CloudStorage,
+class BackupProvider(
     private val password: String,
     private val dataFolder: Path = Path.of("/bw-data")
 ) {
 
-    fun createBackup() {
-        log.info("Starting backup")
+    fun createZip(): InputStream {
+        log.info("Generating ZIP")
 
-        createZip(password).use {
-            storage.save(filename(), "application/zip", it)
-        }
-
-        log.info("Finished backup")
-    }
-
-    private fun createZip(password: String): InputStream {
         val target = Path.of(System.getProperty("java.io.tmpdir"), "bwbckp-${Instant.now()}.tmp")
 
         val zip = ZipFile(target.toFile())
@@ -80,6 +69,4 @@ class BitwardenBackup(
 
         return zipParameters
     }
-
-    private fun filename() = "bitwarden_backup_${LocalDateTime.now()}-encrypted.zip"
 }
