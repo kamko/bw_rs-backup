@@ -22,6 +22,12 @@ jib {
     from {
         // adoptopenjdk:14.0.2_12-jre-hotspot-bionic
         image = "adoptopenjdk@sha256:934333a1462f5f011b07c20e893165ff75f26ad8b782834b601b8c3d2a43bac5"
+        platforms {
+            platform {
+                architecture = "amd64"
+                os = "linux"
+            }
+        }
     }
 
     to {
