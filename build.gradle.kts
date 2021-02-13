@@ -21,13 +21,7 @@ tasks.withType(KotlinCompile::class.java).configureEach {
 jib {
     from {
         // adoptopenjdk:14.0.2_12-jre-hotspot-bionic
-        image = "adoptopenjdk@sha256:934333a1462f5f011b07c20e893165ff75f26ad8b782834b601b8c3d2a43bac5"
-        platforms {
-            platform {
-                architecture = "amd64"
-                os = "linux"
-            }
-        }
+        image = "adoptopenjdk@sha256:7adaa3d344c0d5d772f1b95b49cb5782317846ef6abbb8da8abde7e330b1f218"
     }
 
     to {
