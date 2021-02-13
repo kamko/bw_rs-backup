@@ -11,9 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: set COMMIT_SHA_SHORT
-        run: echo "::set-env name=COMMIT_SHA_SHORT::$(git rev-parse --short HEAD)"
-
       - uses: actions/setup-java@v1
         with:
           java-version: 14
